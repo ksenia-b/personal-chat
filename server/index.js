@@ -4,16 +4,18 @@ import http from "http";
 import { Server } from 'socket.io';
 
 const app = express();
+app.use(cors());
 const server = http.createServer(app);
 
 let activeUsers = [];
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:4000',
+        origin: 'http://localhost:5173',
         methods: ['GET', 'POST'],
     },
 });
+
 
 
 io.on("connection", (socket) => {
