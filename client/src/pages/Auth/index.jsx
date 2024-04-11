@@ -7,9 +7,16 @@ import Login from "../../components/Login/index.jsx";
 import MainNav from "../../components/MainNav/index.jsx";
 
 const Auth = () => {
-
+    const handleLogout = () => {
+        signOut(auth).then(() => {
+            navigate("/");  // Sign-out successful.
+            console.log("Signed out successfully")
+        }).catch((error) => {
+            console.log("Error while signed in = ", error)
+        });
+    }
     return ( <div>Auth:
-           <MainNav/>
+           <MainNav handleLogout={handleLogout()}/>
         </div>
     )
 }

@@ -44,7 +44,6 @@ const Login = () => {
 
     return (
         <div>
-            <span>Login</span>
             <div>
                 <Formik initialValues={{}}
                         onSubmit={loginWithUsernameAndPassword}
@@ -55,8 +54,7 @@ const Login = () => {
                             Password: <input name="password" placeholder="Password" onChange={handleSetPassword}/>
 
                             <div>
-                                {/*<div onClick={openModal}><span>Регистрация</span></div>*/}
-                                <Link to="forgot-password"><span>Забыли пароль?</span></Link>
+                                <Link to="forgot-password"><span>Forgot password?</span></Link>
                             </div>
                             <div>
                                 <button type="submit"

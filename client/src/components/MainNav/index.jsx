@@ -1,40 +1,44 @@
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+
+import { auth } from "../../firebase.js";
+import { AuthContext } from "../../auth/AuthContext.jsx";
+import Modal from "../Modal";
 import Login from "../Login/index.jsx";
-import {useNavigate} from "react-router-dom";
-import {signOut} from "firebase/auth";
-import {auth} from "../../firebase.js";
-import {useContext} from "react";
-import {AuthContext} from "../../auth/AuthContext.jsx";
 import Signup from "../../pages/Signup/index.jsx";
 
-const MainNav = () => {
+
+const MainNav = ({ handleLogout }) => {
     const navigate = useNavigate();
-    const {currentUser} = useContext(AuthContext);
-    const handleLogout = () => {
-        signOut(auth).then(() => {
-            // Sign-out successful.
-            navigate("/");
-            console.log("Signed out successfully")
-        }).catch((error) => {
-            console.log("Error while signed in = ", error)
-        });
-    }
+    const { currentUser } = useContext(AuthContext);
+    const [dialogType, setDialogType] = useState(null);
 
+    const openDialog = (type) => {
+        setDialogType(type);
+    };
 
-    return(
+    const closeDialog = () => {
+        setDialogType(null);
+    };
+
+    return (
         <>
-        {
-            currentUser ? <button onClick={handleLogout}>
-                    Logout
-                </button> :
-               <div>
-                   <button onClick={<Login/>}>Login</button>
-                   <button onClick={<Signup/>}>Signup</button>
-               </div>
-
-
-        }
+            {currentUser ? (
+                <button onClick={handleLogout}>Logout</button>
+            ) : (
+                <div>
+                    <button onClick={() => openDialog("Login")}>Login</button>
+                    <button onClick={() => openDialog("Signup")}>Signup</button>
+                </div>
+            )}
+            {dialogType && (
+                <Modal title={dialogType} onClose={closeDialog}>
+                    {dialogType === "Login" ? <Login /> : <Signup />}
+                </Modal>
+            )}
         </>
-    )
-}
+    );
+};
 
 export default MainNav;
