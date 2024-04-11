@@ -9,7 +9,6 @@ import {auth} from './firebase.js';
 
 const socket = io.connect('http://localhost:4000');
 
-
 function App() {
     const [currentUser, setCurrentUser] = useState(null)
 

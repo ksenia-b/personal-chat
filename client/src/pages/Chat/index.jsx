@@ -1,12 +1,12 @@
 import { useEffect, useState, useContext } from "react";
-import {onAuthStateChanged} from 'firebase/auth';
-import {auth} from '../../firebase.js';
+// import {onAuthStateChanged} from 'firebase/auth';
+// import {auth} from '../../firebase.js';
 import {AuthContext} from "../../auth/AuthContext";
+import socketFunctions from "../../utils/socket";
 
 const Chat = () => {
-    const {currentUser, socket} = useContext(AuthContext)
+    const {currentUser} = useContext(AuthContext);
 
-    // Get the chat in chat section
     useEffect(() => {
         const getChats = async () => {
             try {
@@ -16,8 +16,12 @@ const Chat = () => {
                 console.log(error);
             }
         };
-        getChats();
+        // getChats();
     }, [currentUser?.uid]);
+
+    useEffect(() => {
+        socketFunctions.connectSocket(currentUser); // setOnlineUsers
+    }, [currentUser]);
 
     return (
         <>
