@@ -43,30 +43,28 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <div>
                 <Formik initialValues={{}}
-                        onSubmit={loginWithUsernameAndPassword}
+                        onSubmit={loginWithUsernameAndPassword} className={"flex"}
                 >
                     {({errors, touched}) => (
-                        <Form>
-                            Login: <input name="login" placeholder="Login or email" onChange={handleSetEmail}/>
-                            Password: <input name="password" placeholder="Password" onChange={handleSetPassword}/>
+                        <Form className={"flex-column "}>
+                          <div> Login: <input name="login" placeholder="Login or email" onChange={handleSetEmail}/></div>
+                           <div> Password: <input name="password" placeholder="Password" onChange={handleSetPassword}/></div>
 
                             <div>
                                 <Link to="forgot-password"><span>Forgot password?</span></Link>
                             </div>
                             <div>
                                 <button type="submit"
-                                        onClick={(e) => loginWithUsernameAndPassword(e)}>Login
+                                        onClick={(e) => loginWithUsernameAndPassword(e)}>
+                                    Submit
                                 </button>
                             </div>
 
                         </Form>
                     )}
                 </Formik>
-            </div>
-        </div>
+
     )
 }
 
