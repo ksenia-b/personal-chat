@@ -4,6 +4,7 @@ import {Routes, BrowserRouter as Router, Route, Navigate} from "react-router-dom
 import {AuthProvider} from './auth/AuthContext';
 import Auth from "./pages/Auth/index.jsx";
 import Chat from "./pages/Chat/index.jsx";
+import Layout from "./pages/Layout/index.jsx";
 import io from "socket.io-client";
 import {auth} from './firebase.js';
 
@@ -30,8 +31,10 @@ function App() {
     return (<AuthProvider value={{currentUser, socket}}>
             <Router>
                 <Routes>
-                    <Route path="/" element={currentUser ? <Chat/> : <Navigate to="../auth"/>} />
-                    <Route path="/auth" element={currentUser ? <Navigate to="../"/> : <Auth/>} />
+                    <Route element={<Layout/>}>
+                        <Route path="/" element={currentUser ? <Chat/> : <Navigate to="../auth"/>} />
+                        <Route path="/auth" element={currentUser ? <Navigate to="../"/> : <Auth/>} />
+                    </Route>
                 </Routes>
             </Router>
         </AuthProvider>
