@@ -10,7 +10,6 @@ import Signup from "../../pages/Signup/index.jsx";
 
 
 const MainNav = ({ handleLogout }) => {
-    const navigate = useNavigate();
     const { currentUser } = useContext(AuthContext);
     const [dialogType, setDialogType] = useState(null);
 

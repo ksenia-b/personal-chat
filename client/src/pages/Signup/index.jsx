@@ -4,30 +4,31 @@ import {createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/au
 import {auth} from '../../firebase.js';
 
 const Signup = (props) => {
-    const navigate = useNavigate();
+    const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
 
 
-    const [formData, setFormData] = useState({
-        uid: "",
-        email: "",
-        password: "",
-    });
-
-    const handleInputChange = (e) => {
-        console.log("handle input change")
-        const {name, value} = e.target;
-        if (name === "repeatpassword") {
-            // validPassword = validatePassword()}
-        }
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value,
-        }));
-    };
+    // const [formData, setFormData] = useState({
+    //     uid: "",
+    //     email: "",
+    //     password: "",
+    //     username: ""
+    // });
+    //
+    // const handleInputChange = (e) => {
+    //     console.log("handle input change")
+    //     const {name, value} = e.target;
+    //     if (name === "repeatpassword") {
+    //         // validPassword = validatePassword()}
+    //     }
+    //     setFormData((prevFormData) => ({
+    //         ...prevFormData,
+    //         [name]: value,
+    //     }));
+    // };
 
     const validatePassword = () => {
         let isValid = true
@@ -48,7 +49,7 @@ const Signup = (props) => {
             body: JSON.stringify(dataF)
         };
         console.log("requestOptions = ", requestOptions);
-        fetch('http://localhost:3000/users', requestOptions)
+        fetch('http://localhost:4000/auth/register', requestOptions)
             .then(response => {
                 console.log("response = ", response);
                 return response
@@ -56,32 +57,7 @@ const Signup = (props) => {
         // .then(data => this.setState({ postId: data.id }));
     }
     const register = e => {
-        e.preventDefault()
 
-        setError('')
-        if (validatePassword()) {
-            // Create a new user with email and password using firebase
-            createUserWithEmailAndPassword(auth, formData.email, formData.password)
-                .then(() => {
-                    sendEmailVerification(auth.currentUser)
-                        .then(() => {
-                            console.log(auth.currentUser.uid)
-                            // setTimeActive(true)
-                            // navigate('/verify-email')
-                            if (auth.currentUser.uid) {
-                                // user was created in firebase
-                                formData.uid = auth.currentUser.uid
-                                console.log("auth user id exists");
-
-                                postData(formData)
-                            }
-
-                        }).catch((err) => alert(err.message))
-                })
-                .catch(err => setError(err.message))
-        } else {
-            console.log("password valid", validatePassword())
-        }
         // setEmail('')
         // setPassword('')
         // setConfirmPassword('')
@@ -89,18 +65,18 @@ const Signup = (props) => {
     }
 
     return (
-        <>
-
-            <div>
-                <h2>Registration</h2>
-                <div>Registration will only take a few minutes and will allow you to receive
-                    access to your personal account. Fields marked * are required
-                </div>
+<>
                 <p>{error}</p>
                 <form onSubmit={register} method="POST">
                     <div>
-                        <span>Учетная запись</span>
+                        <span>Registration details</span>
                         <ul>
+                            <div>
+                                <li>Имя *</li>
+                                <input placeholder={"Enter your name"} onChange={handleInputChange}
+                                       name="username"
+                                />
+                            </div>
                             <div>
                                 <li>E-Mail *</li>
                                 <input placeholder={"Enter email"}
@@ -136,39 +112,14 @@ const Signup = (props) => {
                                 />
 
                             </div>
-                            <div>
-                                <li>Birthdate</li>
-                                <input placeholder={"14.06.1990"}
-                                       name="birthday"
-                                />
-                            </div>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <span>User info</span>
-                        <ul>
-                            <div>
-                                <li>Фамилия *</li>
-                                <input placeholder={"Enter surname"}
-                                       onChange={handleInputChange}
-                                       name="surname"
-                                />
-                            </div>
-                            <div>
-                                <li>Имя *</li>
-                                <input placeholder={"Enter your name"} onChange={handleInputChange}
-                                       name="name"
-                                />
-                            </div>
 
                         </ul>
                     </div>
+
 
                     <button>Register</button>
                 </form>
-            </div>
-        </>
+</>
     )
 }
 export default Signup;
