@@ -23,7 +23,7 @@ const MainNav = ({ handleLogout }) => {
     };
 
     return (
-        <>
+        <div>
             {currentUser ? (
                 <button onClick={handleLogout}>Logout</button>
             ) : (
@@ -37,7 +37,7 @@ const MainNav = ({ handleLogout }) => {
                     {dialogType === "Login" ? <Login /> : <Signup />}
                 </Modal>
             )}
-        </>
+        </div>
     );
 };
 

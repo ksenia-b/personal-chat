@@ -7,6 +7,7 @@ import Login from "../../components/Login/index.jsx";
 import MainNav from "../../components/MainNav/index.jsx";
 
 const Auth = () => {
+    const navigate = useNavigate();
     const handleLogout = () => {
         signOut(auth).then(() => {
             navigate("/");  // Sign-out successful.

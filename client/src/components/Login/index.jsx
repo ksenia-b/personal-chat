@@ -6,13 +6,13 @@ import {AuthContext} from "../../auth/AuthContext";
 import {Formik, Form} from 'formik';
 
 const Login = () => {
-
     const navigate = useNavigate();
     const {currentUser} = useContext(AuthContext)
     console.log("current user in Login = ", currentUser)
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setIsLoading] = useState(false);
 
     const handleSetEmail = (e) => {
         e.preventDefault();
@@ -29,20 +29,21 @@ const Login = () => {
         console.log("password = ", password);
         try {
             await signInWithEmailAndPassword(auth, email, password).catch(err => setError(err.message))
-
+            setIsLoading(true)
             console.log("login sucessful", auth)
-            navigate("/");
+            // navigate("/");
         } catch {
             console.log("You entered a wrong username or password.", email, password);
         }
     }
-
+    // setIsLoading(false)
     if (currentUser?.uid) {
-        return <Navigate to='/' replace/>
-
+        return  <Navigate to='/' replace/>
     }
 
-    return (
+    return (<>
+        {loading? <div>Loading...</div>:
+
                 <Formik initialValues={{}}
                         onSubmit={loginWithUsernameAndPassword} className={"flex"}
                 >
@@ -59,11 +60,15 @@ const Login = () => {
                                         onClick={(e) => loginWithUsernameAndPassword(e)}>
                                     Submit
                                 </button>
+
                             </div>
 
                         </Form>
                     )}
                 </Formik>
+
+        }
+        </>
 
     )
 }

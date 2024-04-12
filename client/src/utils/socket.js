@@ -9,7 +9,7 @@ const socketFunctions = {
     connectSocket: (currentUser, setOnlineUsers) => {
         socket.emit("new-user-add", currentUser?.uid);
         socket.on("get-users", (users) => {
-            console.log("get-users for currentUser", currentUser)
+            console.log("get-users for currentUser, setOnlineUsers", users)
             setOnlineUsers(users);
         });
 
