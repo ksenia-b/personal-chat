@@ -1,4 +1,5 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
+
 import {onAuthStateChanged} from 'firebase/auth';
 import {Routes, BrowserRouter as Router, Route, Navigate} from "react-router-dom";
 import {AuthProvider} from './auth/AuthContext';
@@ -7,8 +8,9 @@ import Chat from "./pages/Chat/index.jsx";
 import Layout from "./pages/Layout/index.jsx";
 import io from "socket.io-client";
 import {auth} from './firebase.js';
+import socket from "./utils/socket.js";
+export const SocketContext = React.createContext();
 
-const socket = io.connect('http://localhost:4000');
 
 function App() {
     const [currentUser, setCurrentUser] = useState(null)
@@ -28,7 +30,8 @@ function App() {
 
     console.log('current user---', currentUser)
 
-    return (<AuthProvider value={{currentUser, socket}}>
+    return (<AuthProvider value={{currentUser}}>
+        <SocketContext.Provider value={socket}>
             <Router>
                 <Routes>
                     <Route element={<Layout/>}>
@@ -37,6 +40,7 @@ function App() {
                     </Route>
                 </Routes>
             </Router>
+        </SocketContext.Provider>
         </AuthProvider>
     )
 }

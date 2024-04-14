@@ -5,6 +5,7 @@ import http from "http";
 import { Server } from 'socket.io';
 import ChatRoute from "./routes/chat.route.js";
 import AuthRoute from "./routes/auth.route.js";
+import UserRoute from "./routes/user.route.js";
 
 const app = express();
 app.use(cors());
@@ -38,6 +39,38 @@ io.on("connection", (socket) => {
         // send all active users to new user
         io.emit("get-users", activeUsers);
     });
+
+
+    socket.on("offline", () => {
+        // remove user from active users
+        activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
+        console.log("User Disconnected", activeUsers);
+        // send all active users to all users
+        io.emit("get-users", activeUsers);
+    });
+
+    socket.on("disconnect", () => {
+        // remove user from active users
+        activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
+        console.log("User Disconnected, activeUsers", activeUsers);
+        // send all active users to all users
+        io.emit("get-users", activeUsers);
+    });
+
+    // send message to a specific user
+    socket.on("send-message", (data) => {
+        const { receiverId } = data;
+        const user = activeUsers.find((user) => user.userId === receiverId);
+        // console.log("Sending from socket to :", receiverId)
+        data.status = "sent";
+        // console.log("Data: ", data)
+        if (user) {
+            io.to(user.socketId).emit("recieve-message", data);
+        }
+
+        // console.log("--------------------");
+    });
+
 });
 
 // app.get('/', (req, res) => {
@@ -49,8 +82,12 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
+app.use("/user", UserRoute);
 app.use("/auth", AuthRoute);
 app.use("/chat", ChatRoute);
+
+
+
 
 
 server.listen(4000, () => console.log('Server is running on port 4000'));

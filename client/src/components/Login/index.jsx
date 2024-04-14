@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
 import {auth} from "../../firebase.js";
 import {signInWithEmailAndPassword} from "firebase/auth";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, Navigate} from "react-router-dom";
 import {AuthContext} from "../../auth/AuthContext";
 import {Formik, Form} from 'formik';
 

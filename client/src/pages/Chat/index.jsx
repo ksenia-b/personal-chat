@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { allUsers } from "../../api/user.requests.js";
 // import {onAuthStateChanged} from 'firebase/auth';
 // import {auth} from '../../firebase.js';
 import {AuthContext} from "../../auth/AuthContext";
@@ -10,11 +11,31 @@ const Chat = () => {
     const {currentUser} = useContext(AuthContext);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [sendMessage, setSendMessage] = useState(null);
+    const [users, setUsers] = useState([]);
+
+    // Get the chat in chat section
+    useEffect(function getAllUsersFromDB(){
+        console.log("useEffect ----> getAllUsersFromDB is running...")
+        const getUsers = async () => {
+            try {
+                const { data } = await allUsers();
+                console.log("all users data = ", data);
+                setUsers(data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getUsers();
+    }, [currentUser.uid]);
 
     useEffect(function connectSocketForCurrentUser(){
         socketFunctions.connectSocket(currentUser, setOnlineUsers);
     }, [currentUser]);
 
+    useEffect(() => {
+        socketFunctions.sendMessage(sendMessage);
+    }, [sendMessage]);
 
     const handleSelectedUser = (e) => {
         console.log("handleSelectedUser, e = ", e);

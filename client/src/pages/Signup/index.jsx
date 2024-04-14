@@ -1,9 +1,11 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/auth';
-import {auth} from '../../firebase.js';
+// import {createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/auth';
+// import {auth} from '../../firebase.js';
+// import {post} from "axios";
 
 const Signup = (props) => {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -11,24 +13,23 @@ const Signup = (props) => {
     const [error, setError] = useState('')
 
 
-    // const [formData, setFormData] = useState({
-    //     uid: "",
-    //     email: "",
-    //     password: "",
-    //     username: ""
-    // });
-    //
-    // const handleInputChange = (e) => {
-    //     console.log("handle input change")
-    //     const {name, value} = e.target;
-    //     if (name === "repeatpassword") {
-    //         // validPassword = validatePassword()}
-    //     }
-    //     setFormData((prevFormData) => ({
-    //         ...prevFormData,
-    //         [name]: value,
-    //     }));
-    // };
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+    });
+
+    const handleInputChange = (e) => {
+        console.log("handle input change")
+        const {name, value} = e.target;
+        if (name === "repeatpassword") {
+            // validPassword = validatePassword()}
+        }
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
 
     const validatePassword = () => {
         let isValid = true
@@ -56,24 +57,31 @@ const Signup = (props) => {
             })
         // .then(data => this.setState({ postId: data.id }));
     }
-    const register = e => {
 
-        // setEmail('')
-        // setPassword('')
-        // setConfirmPassword('')
-        // navigate("/login");
-    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (password === confirmPassword) {
+            postData(formData);
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            // navigate("/");
+            // setConfirmPass(true);
+        } else {
+            alert("Passwords did not match!");
+        }
+    };
 
     return (
 <>
                 <p>{error}</p>
-                <form onSubmit={register} method="POST">
+                <form onSubmit={handleSubmit} method="POST">
                     <div>
                         <span>Registration details</span>
                         <ul>
                             <div>
                                 <li>Имя *</li>
-                                <input placeholder={"Enter your name"} onChange={handleInputChange}
+                                <input placeholder={"Enter your usernname"} onChange={handleInputChange}
                                        name="username"
                                 />
                             </div>

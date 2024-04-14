@@ -30,8 +30,21 @@ const socketFunctions = {
             window.removeEventListener("focus", handleFocus);
             window.removeEventListener("blur", handleBlur);
         };
-    }
+    },
 
+    sendMessage: (message) => {
+        if (message) {
+            socket.emit("send-message", message);
+        }
+    },
+
+    receiveMessage: (setReceivedMessage, chatId) => {
+        socket.on("recieve-message", (data) => {
+            if (data.chatId === chatId) {
+                setReceivedMessage(data);
+            }
+        });
+    },
 };
 
 export default socketFunctions;
