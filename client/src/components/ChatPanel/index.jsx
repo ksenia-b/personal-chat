@@ -29,29 +29,6 @@ const ChatPanel = ({selectedUser, currentUser, users}) => {
         setNewMessage(newMessage.target.value);
     };
 
-    // const handleSend = async (e) => {
-    //     e.preventDefault();
-    //     const message = {
-    //         sender: currentUser.uid,
-    //         message: newMessage,
-    //         receiver: selectedUser.uid,
-    //         createdAt: new Date(),
-    //         status: "",
-    //     };
-    //     console.log("handleSend = ", message)
-    //     // const receiverId = chat.members.find((id) => id !== currentUser);
-    //     // // send message to socket server
-    //     // setSendMessage({ ...message, receiverId, createdAt: new Date() });
-    //     // setSelectedFile(null);
-    //     // // send message to database
-    //     try {
-    //         const { data } = await addMessage(message);
-    //         setMessages([...messages, data]);
-    //         setNewMessage("");
-    //     } catch {
-    //         console.log("error");
-    //     }
-    // };
     const handleSubmit = async (e) => {
         e.preventDefault();
         const message = {
@@ -80,7 +57,14 @@ const ChatPanel = ({selectedUser, currentUser, users}) => {
                         {
                             messages && messages.length > 0  ? messages.map(item => (
                             <div key={item.id} className="bg-gray-100 rounded-lg p-4 mb-4">
-                                <div className="text-blue-800 font-semibold">{findUsername(item?.receiver)}:</div>
+                                <div className="">
+                                    <span className={"text-blue-800 font-semibold"}>{findUsername(item?.sender)} </span>
+                                    <span className={item.sender === currentUser.uid ? "text-black-500 italic" : ""}>
+        {item.sender === currentUser.uid && "(you)"}
+    </span>
+
+                                    :
+                                </div>
                                 <div className="text-gray-800 italic">{item?.message}</div>
                             </div>
                             )) : <div className={"italic"}>No messages yet...</div>
