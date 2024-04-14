@@ -6,6 +6,7 @@ import { Server } from 'socket.io';
 import ChatRoute from "./routes/chat.route.js";
 import AuthRoute from "./routes/auth.route.js";
 import UserRoute from "./routes/user.route.js";
+import MessageRoute from "./routes/message.route.js";
 
 const app = express();
 app.use(cors());
@@ -101,6 +102,7 @@ app.use(cors());
 app.use("/user", UserRoute);
 app.use("/auth", AuthRoute);
 app.use("/chat", ChatRoute);
+app.use("/message", MessageRoute);
 
 
 

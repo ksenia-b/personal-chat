@@ -15,7 +15,7 @@ export const getAllUsers = async (req, res) => {
     try {
         const data = await getDocs(collection(db, "users"));
         data.forEach((doc) => {
-            console.log("doc =  ", doc.data().dataF)
+            // console.log("doc =  ", doc.data().dataF)
             const result = {
                 id: doc.id,
                 email: doc.data().dataF.email,
@@ -26,7 +26,7 @@ export const getAllUsers = async (req, res) => {
 
 
         });
-        console.log('users = : ', users)
+        // console.log('users = : ', users)
 
 
         return res.status(200).json(users);

@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-// import { addMessage, getMessages } from "../api/message.requests";
+import { getMessages } from "../api/message.requests";
 
 
 const socket = io(import.meta.env.VITE_APP_SERVER_URL);
@@ -37,6 +37,28 @@ const socketFunctions = {
             window.removeEventListener("focus", handleFocus);
             window.removeEventListener("blur", handleBlur);
         };
+    },
+
+    fetchMessages: async (user, chat, setMessages) => { // or selectedUser.uid
+        try {
+            console.log(user,", fetch messags, chat =  ", user, chat)
+            if(user) {
+                const { data } = await getMessages({currentUser: user, chatId: chat });
+                console.log("data for get messages = ", data)
+                setMessages(data);
+                // EN
+                // Mark the last message as seen if it's from another user
+                // let lastMessage = data[data.length - 1];
+                // if (lastMessage?.senderId !== currentUser) {
+                //     socket.emit("message-seen-status", {
+                //         userId: user._id,
+                //         status: "",
+                //     });
+                // }
+            }
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     sendMessage: (message) => {

@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { allUsers } from "../../api/user.requests.js";
+import ChatPanel from "../../components/ChatPanel/index.jsx";
 // import {onAuthStateChanged} from 'firebase/auth';
 // import {auth} from '../../firebase.js';
 import {AuthContext} from "../../auth/AuthContext";
@@ -10,7 +11,7 @@ import {userChats} from "../../api/chats.js";
 const Chat = () => {
     const {currentUser} = useContext(AuthContext);
     const [onlineUsers, setOnlineUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedUser, setSelectedUser] = useState({});
     const [sendMessage, setSendMessage] = useState(null);
     const [users, setUsers] = useState([]);
 
@@ -39,18 +40,19 @@ const Chat = () => {
     }, [sendMessage]);
 
     const handleSelectedUser = (e) => {
-        console.log("handleSelectedUser, e = ", e);
-        setSelectedUser(e?.target.textContent);
+        const clickedUsername = e?.target.textContent;
+
+        const selectedUserId = users.find(user => user.username === clickedUsername)?.uid;
+        console.log("selectedUserId ", selectedUserId);
+            //users[users.username === e?.target.textContent];
+        console.log("selectedUserId = ", selectedUserId)
+        setSelectedUser({uid: selectedUserId, username: clickedUsername});
     }
 
     const checkOnlineStatus = (userId) => {
         return  onlineUsers.map(usr => usr.userId ).includes(userId);
     };
-    // const getAllUsers = ()=> {
-    //     // return ((onlineUsers.length > users.length)) ? onlineUsers : users;
-    //     return onlineUsers
-    // }
-    // const shownUsers = getAllUsers()
+
     return (
         <div className={"px-4 py-8"}>
             <div className={"flex flex-row justify-between "}>
@@ -68,12 +70,15 @@ const Chat = () => {
                                 users.map(
                                     user => {
                                         return  (
-                                            <div className={"flex flex-row h-8 items-center "}>
+                                            <div className={"flex flex-row h-8 items-center  cursor-pointer"}
+                                                 onClick={handleSelectedUser}>
                                                 {
                                                     checkOnlineStatus(user.uid) &&
-                                                    ( <div className={"h-2 w-2 rounded-full bg-green-500 mr-2 text-center"}></div>)
+                                                    (<div
+                                                        className={"h-2 w-2 rounded-full bg-green-500 mr-2 text-center"}></div>)
                                                 }
-                                               <div>{user?.uid === currentUser.uid ? `${user?.username} (you)` : user?.username} </div>
+                                                {/*<div>{user?.uid === currentUser.uid ? `${user?.username} (you)` : user?.username} </div>*/}
+                                                { <div>{user?.username}</div>}
                                             </div>
                                         )
 
@@ -84,14 +89,7 @@ const Chat = () => {
                         </div>
                     </div>
             </div>
-                <div className={"right-chat w-[60%] bg-gray-300 p-4"}>
-                    <div className="chat-pannel">
-                        <div>
-                            <span>Chat panel {selectedUser && `with user with id = ${selectedUser}`}</span>
-                        </div>
-                        <div></div>
-                    </div>
-                </div>
+              <ChatPanel selectedUser={selectedUser} currentUser={currentUser}/>
             </div>
         </div>
     )
