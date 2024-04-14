@@ -40,8 +40,11 @@ const Chat = () => {
     const handleSelectedUser = (e) => {
         console.log("handleSelectedUser, e = ", e);
         setSelectedUser(e?.target.textContent);
-
     }
+
+    const checkOnlineStatus = (userId) => {
+        return  onlineUsers.map(usr => usr.userId ).includes(userId);
+    };
     return (
         <div className={"px-4 py-8"}>
             <div className={"flex flex-row justify-between "}>
@@ -50,13 +53,27 @@ const Chat = () => {
             </div>
 
             <div className={"flex flex-row py-16 px-8"}>
-            <div className={"left-chat w-[40%] bg-gray-200 p-4"}>
+            <div className={"left-chat w-[50%] bg-gray-200 p-4"}>
                     <div className="chat-panell">
-                        <span>Users online:</span>
+                        <span>All users:</span>
                         <div className={"p-4 bg-white"}>
-                            <div  >
-                                {onlineUsers.map(user => <div key={user?.userId} className={"pointer"} onClick={handleSelectedUser}>{(user.userId !== currentUser.uid) && user.userId}</div>)}
-                            </div>
+                            {
+                                users.map(
+                                    user => {
+                                        return  (
+                                            <div className={"flex flex-row h-8 items-center "}>
+                                                {
+                                                    checkOnlineStatus(user.uid) &&
+                                                    ( <div className={"h-2 w-2 rounded-full bg-green-500 mr-2 text-center"}></div>)
+                                                }
+                                               <div>{user?.username}</div>
+                                            </div>
+                                        )
+
+                                    }
+                                )
+                            }
+
                         </div>
                     </div>
             </div>
