@@ -40,6 +40,22 @@ io.on("connection", (socket) => {
         io.emit("get-users", activeUsers);
     });
 
+    // add new User Registered
+    socket.on("registered-user", (userId) => {
+        console.log("registered-user ", userId)
+        // if user is not added previously
+        if (!activeUsers.some((user) => user.userId === userId)) {
+            activeUsers.push({ userId: userId, socketId: socket.id });
+            console.log("New User Connected, activeUsers = ", activeUsers);
+            // updateMessageStatus({
+            //     userId: newUserId,
+            //     status: "delivered",
+            // });
+        }
+        // send all active users to new user
+        io.emit("get-users", activeUsers);
+    });
+
 
     socket.on("offline", () => {
         // remove user from active users

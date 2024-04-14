@@ -60,15 +60,15 @@ const Signup = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (password === confirmPassword) {
-            postData(formData);
+        if (password !== confirmPassword) {
+            alert("Passwords did not match!");
+        } else {
+            postData(formData)
             setEmail('');
             setPassword('');
             setConfirmPassword('');
             // navigate("/");
             // setConfirmPass(true);
-        } else {
-            alert("Passwords did not match!");
         }
     };
 

@@ -27,9 +27,10 @@ const Chat = () => {
             }
         };
         getUsers();
-    }, [currentUser.uid]);
+    }, [currentUser, onlineUsers]);
 
     useEffect(function connectSocketForCurrentUser(){
+        console.log("useEffect(function connectSocketForCurrentUser() is running.")
         socketFunctions.connectSocket(currentUser, setOnlineUsers);
     }, [currentUser]);
 
@@ -45,6 +46,11 @@ const Chat = () => {
     const checkOnlineStatus = (userId) => {
         return  onlineUsers.map(usr => usr.userId ).includes(userId);
     };
+    // const getAllUsers = ()=> {
+    //     // return ((onlineUsers.length > users.length)) ? onlineUsers : users;
+    //     return onlineUsers
+    // }
+    // const shownUsers = getAllUsers()
     return (
         <div className={"px-4 py-8"}>
             <div className={"flex flex-row justify-between "}>
@@ -58,6 +64,7 @@ const Chat = () => {
                         <span>All users:</span>
                         <div className={"p-4 bg-white"}>
                             {
+
                                 users.map(
                                     user => {
                                         return  (
@@ -66,7 +73,7 @@ const Chat = () => {
                                                     checkOnlineStatus(user.uid) &&
                                                     ( <div className={"h-2 w-2 rounded-full bg-green-500 mr-2 text-center"}></div>)
                                                 }
-                                               <div>{user?.username}</div>
+                                               <div>{user?.uid === currentUser.uid ? `${user?.username} (you)` : user?.username} </div>
                                             </div>
                                         )
 

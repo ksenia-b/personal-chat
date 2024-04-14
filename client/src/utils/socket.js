@@ -13,8 +13,15 @@ const socketFunctions = {
             setOnlineUsers(users);
         });
 
+        // Listen for new user registrations
+        socket.on('registered-user', (userData) => {
+            // Add the new user to the online users list
+            setOnlineUsers(prevUsers => [...prevUsers, userData]);
+        });
+
         const handleFocus = () => {
             socket.emit("new-user-add", currentUser?.uid);
+            socket.emit("registered-user", currentUser?.uid)
         };
 
         const handleBlur = () => {
