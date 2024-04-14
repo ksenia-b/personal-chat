@@ -29,13 +29,18 @@ const ChatPanel = ({selectedUser, currentUser, users}) => {
                     <span>Chat with {selectedUser.uid &&
                         <span className={"text-green-600"}>{selectedUser.username}</span>}</span>
                     <div className="px-2 py-4">
-                        {messages && messages.map(item => (
+                        {
+                            messages && messages.length > 0  ? messages.map(item => (
                             <div key={item.id} className="bg-gray-100 rounded-lg p-4 mb-4">
                                 <div className="text-blue-800 font-semibold">{findUsername(item?.receiver)}:</div>
                                 <div className="text-gray-800 italic">{item?.message}</div>
                             </div>
-                        ))}
+                            )) : <div className={"italic"}>No messages yet...</div>
+                        }
                     </div>
+                </div>
+                <div>
+                    Write a message:
                 </div>
 
             </div>
