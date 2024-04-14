@@ -17,9 +17,9 @@ export const getMessages = async (req, res) => {
         //     // where('receiver', '==', currentUser)
         // );
         const data = await getDocs(q);
-
+        // console.log("messages data = ", data)
         data.forEach((doc) => {
-            console.log("doc1 =  ", doc.data())
+            console.log("message doc1 =  ", doc.data())
             const result = {
                 id: doc.id,
                 message: doc.data().message,
@@ -31,7 +31,7 @@ export const getMessages = async (req, res) => {
 
 
         });
-        console.log('users = : ', messages)
+        console.log('messages = : ', messages)
 
 
         return res.status(200).json(messages);

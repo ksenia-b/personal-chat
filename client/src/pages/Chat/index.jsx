@@ -89,7 +89,7 @@ const Chat = () => {
                         </div>
                     </div>
             </div>
-              <ChatPanel selectedUser={selectedUser} currentUser={currentUser}/>
+              <ChatPanel selectedUser={selectedUser} currentUser={currentUser} users={users}/>
             </div>
         </div>
     )
