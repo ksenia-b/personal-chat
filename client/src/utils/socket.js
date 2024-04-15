@@ -61,14 +61,25 @@ const socketFunctions = {
         }
     },
 
+
     sendMessage: (message) => {
         if (message) {
             socket.emit("send-message", message);
         }
     },
 
+    receiveMessageFromParent: (receivedMessage, chat, setMessages, currentUser, messages) => {
+        console.log("Message Arrived: ", receivedMessage);
+        if (receivedMessage !== null && receivedMessage?.receiver === chat) {
+            setMessages([...messages, receivedMessage]);
+
+            socket.emit("message-seen-status", receivedMessage);
+        }
+    },
     receiveMessage: (setReceivedMessage, chatId) => {
+        console.log("receiveMessage ", chatId);
         socket.on("recieve-message", (data) => {
+            console.log("recieve-message...")
             if (data.chatId === chatId) {
                 setReceivedMessage(data);
             }

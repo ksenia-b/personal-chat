@@ -15,7 +15,7 @@ export const getMessages = async (req, res) => {
             const result = {
                 id: doc.id,
                 message: doc.data().message,
-                uid: doc.data().uid,
+                // uid: doc.data().uid,
                 sender: doc.data().sender,
                 receiver: doc.data().receiver
             };

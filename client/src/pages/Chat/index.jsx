@@ -13,6 +13,7 @@ const Chat = () => {
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState({});
     const [sendMessage, setSendMessage] = useState(null);
+    const [receivedMessage, setReceivedMessage] = useState(null);
     const [users, setUsers] = useState([]);
 
     // Get the chat in chat section
@@ -38,6 +39,12 @@ const Chat = () => {
     useEffect(() => {
         socketFunctions.sendMessage(sendMessage);
     }, [sendMessage]);
+
+    useEffect(() => {
+        if (currentUser) {
+            socketFunctions.receiveMessage(setReceivedMessage, currentUser);
+        }
+    }, []);
 
     const handleSelectedUser = (e) => {
         const clickedUsername = e?.target.textContent;
@@ -89,7 +96,7 @@ const Chat = () => {
                         </div>
                     </div>
             </div>
-              <ChatPanel selectedUser={selectedUser} currentUser={currentUser} users={users}/>
+                <ChatPanel selectedUser={selectedUser} currentUser={currentUser} users={users}/>
             </div>
         </div>
     )
