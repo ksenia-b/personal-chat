@@ -2,8 +2,8 @@ import {useState, useEffect} from "react";
 import socketFunctions from "../../utils/socket";
 import {addMessage} from "../../api/message.requests.js";
 
-const ChatPanel = ({selectedUser, currentUser, users, receivedMessage}) => {
-    console.log("selectedUser = ", selectedUser, " currentUser = ", currentUser)
+const ChatPanel = ({selectedUser, currentUser, users, receivedMessage, setSendMessage}) => {
+    // console.log("selectedUser = ", selectedUser, " currentUser = ", currentUser)
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
 
@@ -18,44 +18,64 @@ const ChatPanel = ({selectedUser, currentUser, users, receivedMessage}) => {
         }
     }, [selectedUser.uid, currentUser]);
 
-    useEffect(() => {
-        socketFunctions.receiveMessageFromParent(
-            receivedMessage,
-            selectedUser.uid, //chat
-            setMessages,
-            currentUser,
-            messages
-        );
-    }, [receivedMessage]);
+    // useEffect(() => {
+    //     socketFunctions.receiveMessageFromParent(
+    //         receivedMessage,
+    //         selectedUser.uid, //chat
+    //         setMessages,
+    //         currentUser,
+    //         messages
+    //     );
+    // }, [receivedMessage]);
 
     const findUsername = (userId) => {
-        const receiverUser = users.find(user => user.uid === userId);
-        console.log("messages.receiver = ", receiverUser)
-        return  receiverUser?.username
-
+        return  users.find(user => user.uid === userId)?.username;
     };
 
-    const handleChange = (newMessage) => {
-        setNewMessage(newMessage.target.value);
-    };
+    // const handleChange = (newMsg) => {
+    //     console.log("handle change...", newMsg.target.value);
+    //     setNewMessage([
+    //         // ...newMessage, // Copy existing messages
+    //         {
+    //             sender: currentUser.uid,
+    //             message: newMsg.target.value,
+    //             receiver: selectedUser.uid,
+    //             createdAt: new Date(),
+    //             status: ""
+    //         }
+    //     ]);
+    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!newMessage){
+            return null;
+        }
+
         const message = {
-            sender: currentUser.uid,
+            sender: currentUser.uid,  // TODO get user info on the server
             message: newMessage,
-            receiver: selectedUser.uid,
-            createdAt: new Date(),
-            status: "",
+            receiver: selectedUser.uid
         };
+
         try {
+
+            setNewMessage('');
             const { data } = await addMessage(message);
-            setMessages([...messages, data]);
-            setNewMessage("");
+            setMessages([...messages, data]); // my?
+
+            socketFunctions.sendMessage(data);
         } catch (error) {
             console.error("Error adding message:", error);
         }
     };
+
+    // useEffect(() => {
+    //     console.log("useEffect newMessage -> ", newMessage)
+    //     socketFunctions.sendMessage({
+    //         ...newMessage
+    //     });
+    // }, [newMessage]);
 
     return (
         <div className={"right-chat w-[60%] bg-gray-300 p-4"}>
@@ -93,7 +113,7 @@ const ChatPanel = ({selectedUser, currentUser, users, receivedMessage}) => {
                                 <input
                                     id="inputMessage"
                                     value={newMessage}
-                                    onChange={handleChange}
+                                    onChange={(e) => setNewMessage(e.target.value)}
                                     placeholder="Message"
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                                 />

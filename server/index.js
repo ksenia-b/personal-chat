@@ -76,16 +76,17 @@ io.on("connection", (socket) => {
 
     // send message to a specific user
     socket.on("send-message", (data) => {
-        const { receiverId } = data;
-        const user = activeUsers.find((user) => user.userId === receiverId);
-        // console.log("Sending from socket to :", receiverId)
+        const { receiver } = data;
+        console.log("Data in send-message: ", data)
+        const user = activeUsers.find((user) => user.userId === receiver);
+        console.log("Sending from socket to user = ", user, " receiverId = ", receiver);
         data.status = "sent";
-        // console.log("Data: ", data)
+
         if (user) {
             io.to(user.socketId).emit("recieve-message", data);
         }
 
-        // console.log("--------------------");
+        console.log("---------------------------------------");
     });
 
 });

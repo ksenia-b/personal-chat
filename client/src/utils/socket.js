@@ -40,13 +40,14 @@ const socketFunctions = {
     },
 
     fetchMessages: async (user, chat, setMessages) => { // or selectedUser.uid
+        // currentUser.uid, selectedUser.uid, setMessages
         try {
             console.log(user,", fetch messags, chat =  ", user, chat)
             if(user) {
                 const { data } = await getMessages({currentUser: user, chatId: chat });
                 console.log("data for get messages = ", data)
                 setMessages(data);
-                // EN
+
                 // Mark the last message as seen if it's from another user
                 // let lastMessage = data[data.length - 1];
                 // if (lastMessage?.senderId !== currentUser) {
@@ -61,8 +62,8 @@ const socketFunctions = {
         }
     },
 
-
     sendMessage: (message) => {
+        console.log("socket.io clint send-message, message = ", message)
         if (message) {
             socket.emit("send-message", message);
         }
@@ -78,8 +79,8 @@ const socketFunctions = {
     },
     receiveMessage: (setReceivedMessage, chatId) => {
         console.log("receiveMessage ", chatId);
-        socket.on("recieve-message", (data) => {
-            console.log("recieve-message...")
+        socket.on("recieve-message", (data) => { // .on?
+            console.log("recieve-message...", data)
             if (data.chatId === chatId) {
                 setReceivedMessage(data);
             }

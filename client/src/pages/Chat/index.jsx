@@ -16,7 +16,6 @@ const Chat = () => {
     const [receivedMessage, setReceivedMessage] = useState(null);
     const [users, setUsers] = useState([]);
 
-    // Get the chat in chat section
     useEffect(function getAllUsersFromDB(){
         console.log("useEffect ----> getAllUsersFromDB is running...")
         const getUsers = async () => {
@@ -36,23 +35,19 @@ const Chat = () => {
         socketFunctions.connectSocket(currentUser, setOnlineUsers);
     }, [currentUser]);
 
-    useEffect(() => {
-        socketFunctions.sendMessage(sendMessage);
-    }, [sendMessage]);
 
-    useEffect(() => {
-        if (currentUser) {
-            socketFunctions.receiveMessage(setReceivedMessage, currentUser);
-        }
-    }, []);
+
+    // useEffect(function receiveMessage () {
+    //     console.log("receive message here!!!!, receivedMessage = ")
+    //     if (currentUser) {
+    //         socketFunctions.receiveMessage(setReceivedMessage, currentUser);
+    //     }
+    // }, []);
 
     const handleSelectedUser = (e) => {
         const clickedUsername = e?.target.textContent;
-
         const selectedUserId = users.find(user => user.username === clickedUsername)?.uid;
         console.log("selectedUserId ", selectedUserId);
-            //users[users.username === e?.target.textContent];
-        console.log("selectedUserId = ", selectedUserId)
         setSelectedUser({uid: selectedUserId, username: clickedUsername});
     }
 
@@ -64,7 +59,6 @@ const Chat = () => {
         <div className={"px-4 py-8"}>
             <div className={"flex flex-row justify-between "}>
                 <div>You: <span className={"bg-gray-300"}>{`${currentUser.email}`}</span></div>
-                {/*<MainNav/>*/}
             </div>
 
             <div className={"flex flex-row py-16 px-8"}>
@@ -96,7 +90,8 @@ const Chat = () => {
                         </div>
                     </div>
             </div>
-                <ChatPanel selectedUser={selectedUser} currentUser={currentUser} users={users}/>
+                <ChatPanel selectedUser={selectedUser} currentUser={currentUser} users={users} receivedMessage={receivedMessage} setSendMessage={setSendMessage} />
+                {/*{selectedUser, currentUser, users, receivedMessage, setSendMessage}*/}
             </div>
         </div>
     )
