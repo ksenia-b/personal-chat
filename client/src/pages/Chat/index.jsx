@@ -71,7 +71,7 @@ const Chat = () => {
                                 users.map(
                                     user => {
                                         return  (
-                                            <div className={"flex flex-row h-8 items-center  cursor-pointer"}
+                                            <div key={user.uid} className={"flex flex-row h-8 items-center  cursor-pointer"}
                                                  onClick={handleSelectedUser}>
                                                 {
                                                     checkOnlineStatus(user.uid) &&

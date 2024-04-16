@@ -20,19 +20,13 @@ const Auth = () => {
         signOut(auth).then(() => {
             // navigate("/");  // Sign-out successful.
             console.log("Signed out successfully", socket)
-            socket.emit("offline")
+            window.location.reload()
+            // socket.emit("offline")
+
         }).catch((error) => {
-            console.log("Error while signed in = ", error)
+            console.log("Error while signed out = ", error)
         });
     }
-
-    const openDialog = (type) => {
-        setDialogType(type);
-    };
-
-    const closeDialog = () => {
-        setDialogType(null);
-    };
 
     return ( <div>
            {/*<MainNav handleLogout={handleLogout}/>*/}
@@ -40,13 +34,13 @@ const Auth = () => {
                 <button onClick={handleLogout}>Logout</button>
             ) : (
                 <div>
-                    <button onClick={() => openDialog("Login")}>Login</button>
-                    <button onClick={() => openDialog("Signup")}>Signup</button>
+                    <button onClick={() => setDialogType("Login")}>Login</button>
+                    <button onClick={() => setDialogType("Signup")}>Signup</button>
                 </div>
             )}
             {dialogType && (
-                <Modal title={dialogType} onClose={closeDialog}>
-                    {dialogType === "Login" ? <Login /> : <Signup />}
+                <Modal title={dialogType} onClose={() => setDialogType(null)}>
+                    {dialogType === "Login" ? <Login onLogin={() => setDialogType(null)}/> : <Signup />}
                 </Modal>
             )}
         </div>

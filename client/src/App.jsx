@@ -18,6 +18,9 @@ function App() {
     useEffect(() => {
         let userData = {}
         onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                return null;
+            }
             userData = {
                 uid: user.uid,
                 email: user.email,
@@ -36,7 +39,7 @@ function App() {
                 <Routes>
                     <Route element={<Layout/>}>
                         <Route path="/" element={currentUser ? <Chat/> : <Navigate to="../auth"/>} />
-                        <Route path="/auth" element={currentUser ? <Navigate to="../"/> : <Auth/>} />
+                        <Route path="/auth" element={currentUser ? <Navigate to="../"/> : null} />
                     </Route>
                 </Routes>
             </Router>
