@@ -10,7 +10,6 @@ import Signup from "../Signup/index.jsx";
 import {SocketContext} from "../../App.jsx";
 
 const Auth = () => {
-    const navigate = useNavigate();
     const socket = useContext(SocketContext)
     const { currentUser } = useContext(AuthContext);
     const [dialogType, setDialogType] = useState(null);

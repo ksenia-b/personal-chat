@@ -32,19 +32,6 @@ const ChatPanel = ({selectedUser, currentUser, users, receivedMessage, setSendMe
         return  users.find(user => user.uid === userId)?.username;
     };
 
-    // const handleChange = (newMsg) => {
-    //     console.log("handle change...", newMsg.target.value);
-    //     setNewMessage([
-    //         // ...newMessage, // Copy existing messages
-    //         {
-    //             sender: currentUser.uid,
-    //             message: newMsg.target.value,
-    //             receiver: selectedUser.uid,
-    //             createdAt: new Date(),
-    //             status: ""
-    //         }
-    //     ]);
-    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();

@@ -36,6 +36,9 @@ const Chat = () => {
     }, [currentUser]);
 
 
+    useEffect(() => {
+        socketFunctions.co
+    }, []);
 
     // useEffect(function receiveMessage () {
     //     console.log("receive message here!!!!, receivedMessage = ")

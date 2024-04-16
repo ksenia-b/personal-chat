@@ -37,8 +37,20 @@ io.on("connection", (socket) => {
             //     status: "delivered",
             // });
         }
+
+        // socket.to(newUserId).emit('receive_message', {
+        //     message: "message",
+        //     userName: 'CHAT_BOT',
+        //     avatar: '',
+        //     createdAt: serverTimestamp(),
+        //     chatId: "1",
+        //     uid: '',
+        //     __createdtime__
+        // });
+
         // send all active users to new user
         io.emit("get-users", activeUsers);
+
     });
 
     // add new User Registered
@@ -83,9 +95,8 @@ io.on("connection", (socket) => {
         data.status = "sent";
 
         if (user) {
-            io.to(user.socketId).emit("recieve-message", data);
+            io.to(user.socketId).emit("receive-message", data);
         }
-
         console.log("---------------------------------------");
     });
 
